@@ -1,7 +1,14 @@
 { pkgs, lib, fetchFromGitHub, rustPlatform }:
 
 let 
-  libpcap = if pkgs.stdenv.isDarwin then pkgs.darwin.libpcap else pkgs.libpcap;
+  isDarwin = pkgs.stdenv.isDarwin;
+  nbi = if isDarwin then 
+    [ pkgs.darwin.libpcap ] else [
+    pkgs.clang
+    pkgs.elfutils
+    pkgs.pkg-config
+  ];
+  bi = if isDarwin then [pkgs.darwin.libpcap] else [pkgs.libpcap];
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "rustnet";
@@ -9,20 +16,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   doCheck = false;
 
-  nativeBuildInputs = [
-    pkgs.clang
-    pkgs.elfutils
-    pkgs.pkg-config
-  ];
+  nativeBuildInputs = nbi;
 
-  buildInputs = [
-    pkgs.libbpf
-    pkgs.zlib
-    libpcap
-    pkgs.elfutils
-  ];
+  buildInputs = bi;
 
-  hardeningDisable = [ "zerocallusedregs" ];
+  hardeningDisable = if isDarwin then [] else [ "zerocallusedregs" ];
   
   src = fetchFromGitHub {
     owner = "domcyrus";
