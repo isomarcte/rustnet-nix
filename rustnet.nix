@@ -5,22 +5,33 @@ let
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "rustnet";
-  version = "0.15.0";
+  version = "0.18.0";
 
   doCheck = false;
 
-  buildInputs = [
-    libpcap
+  nativeBuildInputs = [
+    pkgs.clang
+    pkgs.elfutils
+    pkgs.pkg-config
   ];
+
+  buildInputs = [
+    pkgs.libbpf
+    pkgs.zlib
+    libpcap
+    pkgs.elfutils
+  ];
+
+  hardeningDisable = [ "zerocallusedregs" ];
   
   src = fetchFromGitHub {
     owner = "domcyrus";
     repo = "rustnet";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-HodiHSOTOAb5vRqkeyE3TGNNmUumJfBeYJeNs6vFRas=";
+    hash = "sha256-79mYmb5gvqpjuLweEL+RJIf1jlfypO5zV1VC+BEeyp0=";
   };
 
-  cargoHash = "sha256-uSAMjEuoB9a2dftKq/KhnzhEzb+fF51RLJ/Hsmo1wIM=";
+  cargoHash = "sha256-ULYy4uCwmlOEO+Nlt3GO3cB891BOn9hUIfvr4UfeVzs=";
 
   meta = {
     description = "A cross-platform network monitoring terminal UI tool built with Rust.";
