@@ -3,7 +3,7 @@
 let 
   isDarwin = pkgs.stdenv.isDarwin;
   nbi = [pkgs.clang pkgs.pkg-config];
-  bi = [pkgs.elfutils pkgs.zlib pkgs.libbpf] ++ (if isDarwin then [pkgs.darwin.libpcap] else [pkgs.libpcap]);
+  bi = [pkgs.zlib] ++ (if isDarwin then [pkgs.darwin.libpcap] else [pkgs.libpcap pkgs.elfutils]);
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "rustnet";
