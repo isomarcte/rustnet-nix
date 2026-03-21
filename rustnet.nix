@@ -7,7 +7,7 @@ let
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "rustnet";
-  version = "0.18.0";
+  version = "1.1.0";
 
   doCheck = false;
 
@@ -21,10 +21,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "domcyrus";
     repo = "rustnet";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-79mYmb5gvqpjuLweEL+RJIf1jlfypO5zV1VC+BEeyp0=";
+    hash = "sha256-8H6n9dUo7zRKT8Lp1dN1RJ3bR99GaTeXb0mL4YrXtRA=";
   };
 
-  cargoHash = "sha256-ULYy4uCwmlOEO+Nlt3GO3cB891BOn9hUIfvr4UfeVzs=";
+  cargoHash = "sha256-k+L0aVsu2p7paiowQn0HlCXBCzKlXlZT49Qu2fypNCs=";
 
   meta = {
     description = "A cross-platform network monitoring terminal UI tool built with Rust.";
