@@ -1,35 +1,35 @@
-{ pkgs, lib, fetchFromGitHub, rustPlatform }:
+{ craneLib, pkgs, lib, fetchFromGitHub }:
 
-let 
+let
   isDarwin = pkgs.stdenv.isDarwin;
   nbi = [pkgs.clang pkgs.pkg-config];
   bi = [pkgs.zlib] ++ (if isDarwin then [pkgs.darwin.libpcap] else [pkgs.libpcap pkgs.elfutils]);
-in
-rustPlatform.buildRustPackage (finalAttrs: {
-  pname = "rustnet";
-  version = "1.1.0";
-
-  doCheck = false;
-
-  nativeBuildInputs = nbi;
-
-  buildInputs = bi;
-
-  hardeningDisable = if isDarwin then [] else [ "zerocallusedregs" ];
-  
+  version = "1.4.0-unstable-2026-06-19";
   src = fetchFromGitHub {
     owner = "domcyrus";
     repo = "rustnet";
-    tag = "v${finalAttrs.version}";
-    hash = "sha256-8H6n9dUo7zRKT8Lp1dN1RJ3bR99GaTeXb0mL4YrXtRA=";
+    rev = "7ca41f46a4a09a7ae79807f7854ac5cf6ca2b528";
+    hash = "sha256-1u7cY8CSmR1PKWtGWGnTRZAHTKlRUD0tXkEFtPXi/hE=";
   };
+  pkg = craneLib.buildPackage {
+    pname = "rustnet";
+    inherit version src;
 
-  cargoHash = "sha256-k+L0aVsu2p7paiowQn0HlCXBCzKlXlZT49Qu2fypNCs=";
+    doCheck = false;
 
-  meta = {
-    description = "A cross-platform network monitoring terminal UI tool built with Rust.";
-    homepage = "https://github.com/domcyrus/rustnet";
-    license = lib.licenses.asl20;
-    maintainers = [ ];
+    nativeBuildInputs = nbi;
+
+    buildInputs = bi;
+
+    hardeningDisable = if isDarwin then [] else [ "zerocallusedregs" ];
+
+    meta = {
+      description = "A cross-platform network monitoring terminal UI tool built with Rust.";
+      homepage = "https://github.com/domcyrus/rustnet";
+      license = lib.licenses.asl20;
+      maintainers = [ ];
+    };
   };
-})
+in
+# Re-set so builtins.unsafeGetAttrPos points to this file for nix-update
+pkg.overrideAttrs { inherit version src; }
