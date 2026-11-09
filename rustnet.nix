@@ -4,12 +4,12 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
   nbi = [pkgs.clang pkgs.pkg-config];
   bi = [pkgs.zlib] ++ (if isDarwin then [pkgs.darwin.libpcap] else [pkgs.libpcap pkgs.elfutils]);
-  version = "1.7.0-unstable-2026-11-02";
+  version = "1.7.0-unstable-2026-11-09";
   src = fetchFromGitHub {
     owner = "domcyrus";
     repo = "rustnet";
-    rev = "a905ace6581f6160fe437f3a3024164e5b556acf";
-    hash = "sha256-5H3CW/wRjxSt5wzUN++4EHf62NCVDIB3m8R7IxYarR0=";
+    rev = "218e16d51b62a344bcedc94313a35b21aebe8edc";
+    hash = "sha256-dR227uInXloEv/WF0jxyId4yNqN+tvDy5dyWjQJoPSE=";
   };
   pkg = craneLib.buildPackage {
     pname = "rustnet";
