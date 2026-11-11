@@ -47,6 +47,9 @@
               rustToolchain
               pkgs.just
               pkgs.nix-update
+              pkgs.jq
+              pkgs.ripgrep
+              pkgs.curl
             ];
           };
         };
